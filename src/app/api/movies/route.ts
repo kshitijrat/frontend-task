@@ -6,6 +6,7 @@ export async function GET() {
   if (!apiKey) {
     return NextResponse.json({ error: 'TMDB_API_KEY missing' }, { status: 500 })
   }
+  
 
   try {
     const controller = new AbortController()
