@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
 import { FiHeart, FiExternalLink, FiPlay, FiUser, FiCalendar, FiStar } from 'react-icons/fi'
 import { RootState } from '@/store'
 import { addToFavorites, removeFromFavorites } from '@/store/slices/preferencesSlice'
 import { ContentItem } from '@/store/slices/contentSlice'
+import { setCurrentUserEmail } from '@/store/slices/preferencesSlice'
 
 interface ContentCardProps {
   item: ContentItem
@@ -17,10 +19,20 @@ export default function ContentCard({ item, index }: ContentCardProps) {
   const dispatch = useDispatch()
   const { favorites } = useSelector((state: RootState) => state.preferences)
   const [imageError, setImageError] = useState(false)
-  
+
   const isFavorite = favorites.includes(item.id)
+  const router = useRouter()
+  const { user } = useSelector((state: RootState) => state.auth)
 
   const handleFavoriteToggle = () => {
+    if (!user) {
+      // save intended target (optional) and go to login
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('sf_redirect', window.location.pathname)
+      }
+      router.push('/login')
+      return
+    }
     if (isFavorite) {
       dispatch(removeFromFavorites(item.id))
     } else {
@@ -73,7 +85,7 @@ export default function ContentCard({ item, index }: ContentCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          
+
           {/* Type Badge */}
           <div className="absolute top-3 left-3">
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor()}`}>
@@ -105,7 +117,7 @@ export default function ContentCard({ item, index }: ContentCardProps) {
         <h3 className="text-lg font-semibold mb-2 line-clamp-2 leading-tight">
           {item.title}
         </h3>
-        
+
         {item.description && (
           <p className=" text-sm mb-3 line-clamp-3">
             {item.description}
@@ -147,8 +159,8 @@ export default function ContentCard({ item, index }: ContentCardProps) {
           >
             {getActionIcon()}
             <span>
-              {item.type === 'news' ? 'Read More' : 
-               item.type === 'movie' ? 'Watch Trailer' : 'View Post'}
+              {item.type === 'news' ? 'Read More' :
+                item.type === 'movie' ? 'Watch Trailer' : 'View Post'}
             </span>
           </motion.button>
 

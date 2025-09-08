@@ -10,24 +10,26 @@ import {
   FiFilm,
   FiUsers,
   FiUser,
+  FiLogIn,
 } from 'react-icons/fi'
 import { useRouter, usePathname } from 'next/navigation'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/store'
+import { logout } from '@/store/slices/authSlice'
+import { clearFavoritesOnLogout, setCurrentUserEmail } from '@/store/slices/preferencesSlice'
 
-const navigation = [
-  { name: 'Feed', href: '/', icon: FiHome },
-  { name: 'Trending', href: '/trending', icon: FiTrendingUp },
-  { name: 'Favorites', href: '/favorites', icon: FiHeart },
-  { name: 'Settings', href: '/settings', icon: FiSettings },
-]
-
+// --------------------------
+// Sidebar Navigation Config
+// --------------------------
 const categories = [
   { name: 'News', href: '/news', icon: FiRss },
   { name: 'Movies', href: '/movies', icon: FiFilm },
   { name: 'Social', href: '/social', icon: FiUsers },
 ]
 
+// --------------------------
+// Main Sidebar Component
+// --------------------------
 export default function Sidebar({
   showMobileMenu,
   setShowMobileMenu,
@@ -37,7 +39,6 @@ export default function Sidebar({
 }) {
   const router = useRouter()
   const pathname = usePathname()
-  const { darkMode } = useSelector((state: RootState) => state.preferences)
 
   return (
     <>
@@ -45,7 +46,7 @@ export default function Sidebar({
       <motion.div
         initial={{ x: -264 }}
         animate={{ x: 0 }}
-        className={`fixed inset-y-0 left-0 z-50 w-64 hidden lg:block border-r`}
+        className="fixed inset-y-0 left-0 z-50 w-64 hidden lg:block border-r "
       >
         <SidebarContent router={router} pathname={pathname} />
       </motion.div>
@@ -55,15 +56,15 @@ export default function Sidebar({
         initial={{ x: -264 }}
         animate={{ x: showMobileMenu ? 0 : -264 }}
         transition={{ duration: 0.3 }}
-        className={`fixed inset-y-0 left-0 z-50 w-64 lg:hidden border-r`}
+        className="fixed inset-y-0 left-0 z-50 w-64 lg:hidden border-r "
       >
         <SidebarContent router={router} pathname={pathname} />
       </motion.div>
 
-      {/* Overlay to close sidebar on mobile */}
+      {/* Overlay for mobile */}
       {showMobileMenu && (
         <div
-          className="fixed inset-0 z-40 lg:hidden"
+          className="fixed inset-0 z-40 lg:hidden bg-black/30"
           onClick={() => setShowMobileMenu(false)}
         />
       )}
@@ -71,9 +72,9 @@ export default function Sidebar({
   )
 }
 
-/* -------------------------
-   Sidebar Content Component
-----------------------------*/
+// --------------------------
+// Sidebar Content Component
+// --------------------------
 function SidebarContent({
   router,
   pathname,
@@ -81,38 +82,82 @@ function SidebarContent({
   router: ReturnType<typeof useRouter>
   pathname: string
 }) {
+  const dispatch = useDispatch()
+  const { user } = useSelector((state: RootState) => state.auth)
+
+  // --------------------------
+  // Logout Handler
+  // --------------------------
+  const handleLogout = () => {
+    dispatch(logout())
+    dispatch(clearFavoritesOnLogout())     // clears favorites state
+    dispatch(setCurrentUserEmail(null))
+    router.push('/login') // redirect to login after logout
+  }
+
+  // --------------------------
+  // Navigation Handler
+  // --------------------------
+  const handleNavigation = (href: string) => {
+    if (!user) {
+      // If user not logged in, save the desired route and redirect to login
+      localStorage.setItem('sf_redirect', href)
+      router.push('/login')
+    } else {
+      router.push(href)
+    }
+  }
+
+  // --------------------------
+  // Navigation Links
+  // --------------------------
+  const navigation = [
+    { name: 'Feed', href: '/', icon: FiHome },
+    { name: 'Trending', href: '/trending', icon: FiTrendingUp },
+    { name: 'Favorites', href: '/favorites', icon: FiHeart },
+    { name: 'Settings', href: '/settings', icon: FiSettings },
+    ...(!user ? [{ name: 'Login/Signup', href: '/login', icon: FiLogIn }] : []),
+  ]
+
   return (
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="p-6">
-        <div className="flex items-center space-x-3">
+        <div
+          className="flex items-center hover:cursor-pointer space-x-3"
+          onClick={() => handleNavigation('/')}
+        >
           <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg flex items-center justify-center">
             <FiRss className="text-white" size={18} />
           </div>
-          <span className="text-xl font-bold ">
-            SocialFeed
-          </span>
+          <span className="text-xl font-bold">SocialFeed</span>
         </div>
       </div>
 
-      {/* User Info (static placeholder) */}
+      {/* User Info Section */}
       <div className="px-6 mb-6">
-        <div className="flex items-center space-x-3 p-3  rounded-lg">
+        <div className="flex items-center space-x-3 p-3 rounded-lg hover:cursor-pointer">
           <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-teal-500 flex items-center justify-center">
             <FiUser className="text-white" size={18} />
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium  truncate">
-              Guest User
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-              guest@example.com
-            </p>
+          <div className="flex-1">
+            <div className="text-sm font-medium">{user?.name ?? 'Guest'}</div>
+            <div className="text-xs truncate">
+              {user?.email ?? 'guest@example.com'}
+            </div>
           </div>
+          {user && (
+            <button
+              onClick={handleLogout}
+              className="px-2 py-1 text-xs text-red-600 border rounded hover:bg-red-50"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Navigation Links */}
+      {/* Main Navigation Links */}
       <nav className="flex-1 px-4 space-y-2">
         {navigation.map((item) => {
           const isActive = pathname === item.href
@@ -121,12 +166,12 @@ function SidebarContent({
               key={item.name}
               whileHover={{ scale: 1.02, x: 4 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => router.push(item.href)}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
-                isActive
+              onClick={() => handleNavigation(item.href)}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 
+                ${isActive
                   ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500'
-                  : ' hover:border-b dark:hover:border-gray-200'
-              }`}
+                  : 'hover:border-b'
+                }`}
             >
               <item.icon size={20} />
               <span className="font-medium">{item.name}</span>
@@ -135,7 +180,7 @@ function SidebarContent({
         })}
       </nav>
 
-      {/* Categories */}
+      {/* Categories Section */}
       <div className="px-4 pb-6">
         <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
           Categories
@@ -148,12 +193,12 @@ function SidebarContent({
                 key={item.name}
                 whileHover={{ scale: 1.02, x: 4 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => router.push(item.href)}
-                className={`w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-200 ${
-                  isActive
+                onClick={() => handleNavigation(item.href)}
+                className={`w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-200 
+                  ${isActive
                     ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400'
-                    : 'hover:border-b dark:hover:border-gray-200'
-                }`}
+                    : 'hover:border-b'
+                  }`}
               >
                 <item.icon size={16} />
                 <span className="text-sm">{item.name}</span>

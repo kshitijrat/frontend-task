@@ -26,7 +26,7 @@ export async function GET() {
 
     const data = await res.json()
     return NextResponse.json({ results: data.results })
-  } catch (err: unknown) {
+  } catch (err) {
     const message = typeof err === 'object' && err !== null && 'message' in err
       ? (err as { message?: string }).message
       : String(err);
