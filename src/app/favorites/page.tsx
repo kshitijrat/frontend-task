@@ -20,11 +20,11 @@ export default function Favorites() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center space-x-3">
+        <h1 className="text-3xl font-bold flex items-center space-x-3">
           <FiHeart className="text-red-500" />
           <span>Favorites</span>
         </h1>
-        <p className="text-gray-600 dark:text-gray-300 mt-2">
+        <p className=" mt-2">
           {favoriteItems.length > 0 
             ? `You have ${favoriteItems.length} favorite item${favoriteItems.length !== 1 ? 's' : ''}`
             : 'Save your favorite content to see it here'}
@@ -51,10 +51,10 @@ export default function Favorites() {
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
             <FiHeart className="text-red-500" size={32} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          <h3 className="text-xl font-semibold  mb-2">
             No favorites yet
           </h3>
-          <p className="text-gray-600 dark:text-gray-300 max-w-md mx-auto">
+          <p className=" max-w-md mx-auto">
             Start adding content to your favorites by clicking the heart icon on any post. 
             They'll appear here for easy access later.
           </p>

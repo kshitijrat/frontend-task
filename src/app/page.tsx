@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
 import { FiRefreshCw } from 'react-icons/fi'
@@ -10,26 +10,20 @@ import {
   fetchMovies, 
   fetchSocialPosts, 
   updateTrending,
-  ContentItem 
 } from '@/store/slices/contentSlice'
 import ContentCard from '@/components/ContentCard'
 import { AppDispatch } from '@/store'
 
 export default function Home() {
-  
   const dispatch = useDispatch<AppDispatch>()
   const { items, loading, error, searchQuery, searchResults } = useSelector((state: RootState) => state.content)
   const { categories } = useSelector((state: RootState) => state.preferences)
   const [refreshing, setRefreshing] = useState(false)
 
-  useEffect(() => {
-    loadContent()
-  }, [categories])
-
-  const loadContent = async () => {
+  // Automatically fetch content when page loads or categories change
+  const loadContent = useCallback(async () => {
     setRefreshing(true)
     try {
-      // Fetch content based on user preferences
       await Promise.all([
         dispatch(fetchNews(categories.includes('Technology') ? 'technology' : 'general')),
         dispatch(fetchMovies()),
@@ -39,7 +33,12 @@ export default function Home() {
     } finally {
       setRefreshing(false)
     }
-  }
+  }, [categories, dispatch])
+
+  // ✅ Run on first page load and whenever `categories` changes
+  useEffect(() => {
+    loadContent()
+  }, [loadContent])
 
   const displayItems = searchQuery.trim() ? searchResults : items
 
@@ -49,21 +48,21 @@ export default function Home() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"
+          className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full"
         />
       </div>
     )
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto p-6 min-h-screen">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+        <div className="mb-4 md:mb-0">
           <motion.h1 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-3xl font-bold text-gray-900 dark:text-white"
+            className="text-3xl font-bold"
           >
             {searchQuery ? `Search Results for "${searchQuery}"` : 'Your Feed'}
           </motion.h1>
@@ -71,24 +70,11 @@ export default function Home() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-gray-600 dark:text-gray-300 mt-1"
+            className="mt-1"
           >
             {searchQuery ? `${displayItems.length} results found` : 'Latest news, movies, and social content'}
           </motion.p>
         </div>
-
-        {!searchQuery && (
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={loadContent}
-            disabled={refreshing}
-            className="flex items-center space-x-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-          >
-            <FiRefreshCw className={refreshing ? 'animate-spin' : ''} size={16} />
-            <span>Refresh</span>
-          </motion.button>
-        )}
       </div>
 
       {/* Error State */}
@@ -96,7 +82,7 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6"
+          className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6"
         >
           <p className="text-red-800 dark:text-red-300">{error}</p>
         </motion.div>
@@ -117,29 +103,19 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center py-12"
+          className="text-center py-16"
         >
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-            <FiRefreshCw className="text-gray-400" size={24} />
+          <div className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center">
+            <FiRefreshCw className="text-gray-400" size={28} />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+          <h3 className="text-xl font-semibold mb-2">
             {searchQuery ? 'No results found' : 'No content available'}
           </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
+          <p className="mb-4">
             {searchQuery 
               ? 'Try adjusting your search terms' 
-              : 'Click refresh to load content'}
+              : 'Content will load automatically'}
           </p>
-          {!searchQuery && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={loadContent}
-              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-            >
-              Load Content
-            </motion.button>
-          )}
         </motion.div>
       )}
     </div>

@@ -58,26 +58,26 @@ export default function Settings() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto p-3">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8"
+        className=" rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8"
       >
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Settings</h1>
-          <p className="text-gray-600 dark:text-gray-300">
+          <h1 className="text-3xl font-bold  mb-2">Settings</h1>
+          <p className="">
             Customize your feed by selecting your favorite categories
           </p>
         </div>
 
         {/* Category Selection */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-xl font-semibold  mb-4">
             Preferred Categories
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">
+          <p className="text-sm mb-6">
             Select the categories you're most interested in. We'll personalize your feed based on these preferences.
           </p>
 

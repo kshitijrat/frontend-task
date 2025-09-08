@@ -39,9 +39,9 @@ export default function ContentCard({ item, index }: ContentCardProps) {
 
   const getTypeColor = () => {
     switch (item.type) {
-      case 'news': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
-      case 'movie': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300'
-      case 'social': return 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300'
+      case 'news': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300'
+      case 'movie': return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
+      case 'social': return 'bg-teal-100 text-teal-800 dark:bg-teal-900/50 dark:text-teal-300'
       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
     }
   }
@@ -61,10 +61,10 @@ export default function ContentCard({ item, index }: ContentCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       whileHover={{ y: -4, scale: 1.02 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700 group"
+      className=" rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700 group"
     >
       {/* Image */}
-      {item.image && !imageError && (
+      {item.image && !imageError ? (
         <div className="relative aspect-video overflow-hidden">
           <img
             src={item.image}
@@ -86,7 +86,7 @@ export default function ContentCard({ item, index }: ContentCardProps) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleFavoriteToggle}
-            className="absolute top-3 right-3 p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors"
+            className="absolute top-3 right-3 p-2 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
           >
             <FiHeart
               size={16}
@@ -94,22 +94,26 @@ export default function ContentCard({ item, index }: ContentCardProps) {
             />
           </motion.button>
         </div>
+      ) : (
+        <div className="relative aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+          <span className="text-gray-400 dark:text-gray-300">No Image</span>
+        </div>
       )}
 
       {/* Content */}
       <div className="p-5">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 leading-tight">
+        <h3 className="text-lg font-semibold mb-2 line-clamp-2 leading-tight">
           {item.title}
         </h3>
         
         {item.description && (
-          <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-3">
+          <p className=" text-sm mb-3 line-clamp-3">
             {item.description}
           </p>
         )}
 
         {/* Meta Information */}
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
+        <div className="flex items-center justify-between text-xs  mb-4">
           <div className="flex items-center space-x-4">
             {item.author && (
               <div className="flex items-center space-x-1">
@@ -139,7 +143,7 @@ export default function ContentCard({ item, index }: ContentCardProps) {
             whileTap={{ scale: 0.95 }}
             onClick={() => item.url && window.open(item.url, '_blank')}
             disabled={!item.url && item.type !== 'social'}
-            className="flex items-center space-x-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed  rounded-lg text-sm font-medium transition-colors shadow"
           >
             {getActionIcon()}
             <span>

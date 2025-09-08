@@ -1,17 +1,18 @@
 'use client'
 
-import { useSelector } from 'react-redux'
-import { useRouter, usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { 
-  FiHome, 
-  FiTrendingUp, 
-  FiHeart, 
+import {
+  FiHome,
+  FiTrendingUp,
+  FiHeart,
   FiSettings,
   FiRss,
   FiFilm,
-  FiUsers 
+  FiUsers,
+  FiUser,
 } from 'react-icons/fi'
+import { useRouter, usePathname } from 'next/navigation'
+import { useSelector } from 'react-redux'
 import { RootState } from '@/store'
 
 const navigation = [
@@ -27,7 +28,13 @@ const categories = [
   { name: 'Social', href: '/social', icon: FiUsers },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({
+  showMobileMenu,
+  setShowMobileMenu,
+}: {
+  showMobileMenu: boolean
+  setShowMobileMenu: (value: boolean) => void
+}) {
   const router = useRouter()
   const pathname = usePathname()
   const { darkMode } = useSelector((state: RootState) => state.preferences)
@@ -35,77 +42,126 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <motion.div 
+      <motion.div
         initial={{ x: -264 }}
         animate={{ x: 0 }}
-        className="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 hidden lg:block"
+        className={`fixed inset-y-0 left-0 z-50 w-64 hidden lg:block border-r`}
       >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="p-6">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center space-x-3"
-            >
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg flex items-center justify-center">
-                <FiRss className="text-white" size={18} />
-              </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">SocialFeed</span>
-            </motion.div>
+        <SidebarContent router={router} pathname={pathname} />
+      </motion.div>
+
+      {/* Mobile Sidebar */}
+      <motion.div
+        initial={{ x: -264 }}
+        animate={{ x: showMobileMenu ? 0 : -264 }}
+        transition={{ duration: 0.3 }}
+        className={`fixed inset-y-0 left-0 z-50 w-64 lg:hidden border-r`}
+      >
+        <SidebarContent router={router} pathname={pathname} />
+      </motion.div>
+
+      {/* Overlay to close sidebar on mobile */}
+      {showMobileMenu && (
+        <div
+          className="fixed inset-0 z-40 lg:hidden"
+          onClick={() => setShowMobileMenu(false)}
+        />
+      )}
+    </>
+  )
+}
+
+/* -------------------------
+   Sidebar Content Component
+----------------------------*/
+function SidebarContent({
+  router,
+  pathname,
+}: {
+  router: ReturnType<typeof useRouter>
+  pathname: string
+}) {
+  return (
+    <div className="flex flex-col h-full">
+      {/* Logo */}
+      <div className="p-6">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg flex items-center justify-center">
+            <FiRss className="text-white" size={18} />
           </div>
+          <span className="text-xl font-bold ">
+            SocialFeed
+          </span>
+        </div>
+      </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 px-4 space-y-2">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href
-              return (
-                <motion.button
-                  key={item.name}
-                  whileHover={{ scale: 1.02, x: 4 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push(item.href)}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
-                    isActive
-                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-                  }`}
-                >
-                  <item.icon size={20} />
-                  <span className="font-medium">{item.name}</span>
-                </motion.button>
-              )
-            })}
-          </nav>
-
-          {/* Categories */}
-          <div className="px-4 pb-6">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
-              Categories
-            </h3>
-            <div className="space-y-2">
-              {categories.map((item) => {
-                const isActive = pathname === item.href
-                return (
-                  <motion.button
-                    key={item.name}
-                    whileHover={{ scale: 1.02, x: 4 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => router.push(item.href)}
-                    className={`w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-200 ${
-                      isActive
-                        ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400'
-                        : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                    }`}
-                  >
-                    <item.icon size={16} />
-                    <span className="text-sm">{item.name}</span>
-                  </motion.button>
-                )
-              })}
-            </div>
+      {/* User Info (static placeholder) */}
+      <div className="px-6 mb-6">
+        <div className="flex items-center space-x-3 p-3  rounded-lg">
+          <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-teal-500 flex items-center justify-center">
+            <FiUser className="text-white" size={18} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium  truncate">
+              Guest User
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+              guest@example.com
+            </p>
           </div>
         </div>
-      </motion.div>
-    </>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className="flex-1 px-4 space-y-2">
+        {navigation.map((item) => {
+          const isActive = pathname === item.href
+          return (
+            <motion.button
+              key={item.name}
+              whileHover={{ scale: 1.02, x: 4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => router.push(item.href)}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
+                isActive
+                  ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500'
+                  : ' hover:border-b dark:hover:border-gray-200'
+              }`}
+            >
+              <item.icon size={20} />
+              <span className="font-medium">{item.name}</span>
+            </motion.button>
+          )
+        })}
+      </nav>
+
+      {/* Categories */}
+      <div className="px-4 pb-6">
+        <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
+          Categories
+        </h3>
+        <div className="space-y-2">
+          {categories.map((item) => {
+            const isActive = pathname === item.href
+            return (
+              <motion.button
+                key={item.name}
+                whileHover={{ scale: 1.02, x: 4 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => router.push(item.href)}
+                className={`w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-200 ${
+                  isActive
+                    ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400'
+                    : 'hover:border-b dark:hover:border-gray-200'
+                }`}
+              >
+                <item.icon size={16} />
+                <span className="text-sm">{item.name}</span>
+              </motion.button>
+            )
+          })}
+        </div>
+      </div>
+    </div>
   )
 }
