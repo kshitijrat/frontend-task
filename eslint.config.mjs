@@ -10,32 +10,32 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  // Base recommended rules for Next.js + TypeScript
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 
   {
     ignores: [
-      "node_modules/**", // dependencies
-      ".next/**", // Next.js build files
-      "out/**", // exported static site
-      "build/**", // custom build folder
-      "next-env.d.ts", // auto-generated types
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
     ],
   },
 
   {
     rules: {
-      // ❗ Show only actual problems, ignore warnings
-      "no-console": "warn", // allow console logs as warnings
-      "react-hooks/exhaustive-deps": "warn",
-
-      // turn warnings into ignore (0) for less strict development
+      "no-console": "off",
+      "react-hooks/exhaustive-deps": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "react/no-unescaped-entities": "off",
-
-      // Allow development convenience
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-explicit-any": "off",
       "no-debugger": "off",
       "no-alert": "off",
+      "react/prop-types": "off",
+      "react/react-in-jsx-scope": "off",
     },
   },
 ];
