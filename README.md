@@ -115,7 +115,6 @@ PORT=3000
 
 ## **Preview**
 
-<div style="display: flex; gap: 10px;">
-  <img src="public/images/feed.png" alt="Feed Preview" width="300"/>
-  <img src="public/images/login.png" alt="Trending Preview" width="300"/>
-</div>
+![Login/Signup Preview](public/images/login.png)
+![Feed Preview](public/images/feed.png)
+
