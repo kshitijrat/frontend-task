@@ -130,7 +130,7 @@ const contentSlice = createSlice({
       .addCase(fetchNews.fulfilled, (state, action: PayloadAction<NewsArticle[]>) => {
         state.loading = false
         const newsItems: ContentItem[] = action.payload.map(article => ({
-          id: `news-${Date.now()}-${Math.random()}`,
+          id: `news-${encodeURIComponent(article.url)}`,
           type: 'news',
           title: article.title,
           description: article.description,
