@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+```
+# SmartFeed App
 
-## Getting Started
+SmartFeed is a React/Next.js web application that allows users to browse content from multiple sources (News, Movies, Social Posts), save favorite items, and manage preferences like dark mode and feed categories. Favorites are **per-user** and persist across sessions.
 
-First, run the development server:
+---
+
+## **Features**
+
+- User authentication (signup/login/logout) with hashed passwords.
+- Per-user favorites stored in localStorage.
+- Fetch content dynamically:
+  - News (via `/api/news`)
+  - Movies (via `/api/movies`)
+  - Social posts (via `/api/social`)
+- Dark mode and category preferences.
+- Responsive UI with Tailwind CSS.
+- Animations with Framer Motion.
+- Protected routes for authenticated users.
+- Search and trending content features.
+- Favorites page showing user-specific favorite items.
+
+---
+
+## **Tech Stack**
+
+- **Frontend:** Next.js 13 (App Router), React
+- **State Management:** Redux Toolkit
+- **Styling:** Tailwind CSS
+- **Animations:** Framer Motion
+- **Auth:** LocalStorage-based mock authentication (bcrypt for password hashing)
+- **Icons:** React-Icons (Feather icons)
+- **Data Persistence:** LocalStorage (per-user favorites)
+
+---
+
+## **Folder Structure**
+
+```
+````
+
+---
+
+## **Setup & Installation**
+
+1. Clone the repository:
+```bash
+git clone <repo-url>
+cd frontend-task
+````
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open the app:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## **Usage**
 
-To learn more about Next.js, take a look at the following resources:
+* **Sign Up / Login:** Use email/password to create or log in. Favorites are per user.
+* **Browse Content:** Feed shows news, movies, and social posts.
+* **Favorite Items:** Click the heart icon to save items. Favorites persist for your user only.
+* **Favorites Page:** Click “Favorites” in Sidebar to see saved items.
+* **Trending Page:** Click “Trending” in Sidebar to view **top 5 trending items** across all categories.
+* **Preferences:** Toggle dark mode and manage categories from Sidebar or Settings.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+/           -> Feed/Home
+/trending   -> Trending Page (Top 5)
+ /favorites -> Favorites Page
+ /settings  -> User Preferences
+ /login     -> Login/Signup Page
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## **Key Notes**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Favorites per User:**
+  Stored in `localStorage` under key `sf_favorites_{userEmail}`.
+
+* **Authentication:**
+  Mock authentication is local only. Passwords are hashed using bcrypt.
+
+* **Content:**
+  Feed items are refreshed via API routes. Favorites are preserved using per-user storage.
+
+* **State Management:**
+  Redux Toolkit is used for `auth`, `preferences`, and `content` slices.
+
+---
+
+---
+```
