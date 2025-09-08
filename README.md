@@ -1,6 +1,3 @@
-Perfect! Here's the **updated and complete README.md** including all your requested sections, the trending update, and the sample `.env` configuration:
-
-````markdown
 # SmartFeed App
 
 SmartFeed is a React/Next.js web application that allows users to browse content from multiple sources (News, Movies, Social Posts), save favorite items, and manage preferences like dark mode and feed categories. Favorites are **per-user** and persist across sessions.
