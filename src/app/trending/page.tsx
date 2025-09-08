@@ -18,14 +18,14 @@ export default function Trending() {
   const dispatch = useDispatch<AppDispatch>()
   const { trendingItems, items } = useSelector((state: RootState) => state.content)
 
-  // Fetch all content types on mount
+  // fetch all content types on mount
   useEffect(() => {
     dispatch(fetchNews('general'))
     dispatch(fetchMovies())
     dispatch(fetchSocialPosts())
   }, [dispatch])
 
-  // Update trending whenever items change
+  // update trending whenever items change
   useEffect(() => {
     if (items.length > 0) {
       dispatch(updateTrending())
@@ -51,7 +51,7 @@ export default function Trending() {
         </p>
       </motion.div>
 
-      {/* Trending Badge */}
+      {/* Trending*/}
       {trendingItems.length > 0 && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -78,7 +78,7 @@ export default function Trending() {
               transition={{ delay: index * 0.1 }}
               className="relative"
             >
-              {/* Trending Rank */}
+              {/* Rank */}
               <div className="absolute -top-2 -left-2 z-10 w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
                 {index + 1}
               </div>

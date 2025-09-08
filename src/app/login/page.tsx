@@ -19,13 +19,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [localError, setLocalError] = useState<string | null>(null)
 
-  // Redirect once the user logs in or signs up
   useEffect(() => {
     if (isAuthenticated && user?.email) {
-      // Set current logged-in user's email to preferencesSlice
       dispatch(setCurrentUserEmail(user.email))
 
-      // If guest user clicked a favorite before logging in, redirect there
+      // if guest user clicked a favorite before logging in, redirect
       const redirect = typeof window !== 'undefined' ? localStorage.getItem('sf_redirect') || '/' : '/'
       if (typeof window !== 'undefined') localStorage.removeItem('sf_redirect')
 
@@ -33,7 +31,7 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, user, dispatch, router])
 
-  // Clear any error from the auth slice when this page mounts/unmounts
+  // clear erro 
   useEffect(() => {
     return () => {
       dispatch(clearError())
@@ -45,13 +43,13 @@ export default function LoginPage() {
     setLocalError(null)
 
     if (isLogin) {
-      // Existing user login
+      // existing user login
       const res = await dispatch(loginUser({ email, password }))
       if (loginUser.rejected.match(res)) {
         setLocalError((res.payload as string) || res.error?.message || 'Login failed')
       }
     } else {
-      // New user signup
+      // new user signup
       if (!name.trim()) {
         setLocalError('Please enter a name')
         return
@@ -70,7 +68,6 @@ export default function LoginPage() {
         <h1 className="text-2xl font-bold mb-4">{isLogin ? 'Login' : 'Sign Up'}</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          {/* Show name field only during Sign Up */}
           {!isLogin && (
             <input
               value={name}
@@ -107,12 +104,12 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Error messages */}
+        {/* error */}
         {(localError || error) && (
           <p className="mt-3 text-sm text-red-600">{localError || error}</p>
         )}
 
-        {/* Toggle between Login and Sign Up */}
+        {/* login and sign up */}
         <p className="text-sm mt-4">
           {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
           <button

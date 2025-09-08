@@ -20,7 +20,7 @@ export default function Home() {
   const { categories } = useSelector((state: RootState) => state.preferences)
   const [refreshing, setRefreshing] = useState(false)
 
-  // Automatically fetch content when page loads or categories change
+  // automatically fetch content when page loads or categories change
   const loadContent = useCallback(async () => {
     setRefreshing(true)
     try {
@@ -35,7 +35,7 @@ export default function Home() {
     }
   }, [categories, dispatch])
 
-  // ✅ Run on first page load and whenever `categories` changes
+  // run on first page load and whenever `categories` changes
   useEffect(() => {
     loadContent()
   }, [loadContent])
@@ -77,7 +77,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Error State */}
+      {/* error State */}
       {error && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -88,7 +88,7 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* Content Grid */}
+      {/* content Grid */}
       {displayItems.length > 0 ? (
         <motion.div 
           initial={{ opacity: 0 }}

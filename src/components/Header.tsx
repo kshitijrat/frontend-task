@@ -33,7 +33,6 @@ export default function Header({
 
   const debouncedSearch = useDebounce(localSearch, 300)
 
-  /** Handle search and filter content */
   useEffect(() => {
     dispatch(setSearchQuery(debouncedSearch))
 
@@ -50,7 +49,6 @@ export default function Header({
     }
   }, [debouncedSearch, items, dispatch])
 
-  /** Toggle between EN and ES language */
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === 'EN' ? 'ES' : 'EN'))
   }
@@ -62,7 +60,7 @@ export default function Header({
       className="fixed top-0 right-0 left-0 lg:left-64 z-50 backdrop-blur-md shadow-sm  border-b border-gray-200 dark:border-gray-700"
     >
       <div className="flex items-center justify-between px-4 lg:px-8 h-16">
-        {/* Mobile Menu Button */}
+        {/* mobile Menu Button */}
         <button
           onClick={() => setShowMobileMenu(!showMobileMenu)}
           className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
@@ -70,7 +68,7 @@ export default function Header({
           {showMobileMenu ? <FiX size={20} /> : <FiMenu size={20} />}
         </button>
 
-        {/* Search Bar */}
+        {/* search Bar */}
         <div className="flex-1 max-w-2xl mx-4">
           <div className="relative">
             <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 " size={18} />
@@ -84,9 +82,9 @@ export default function Header({
           </div>
         </div>
 
-        {/* Controls */}
+        {/* controls */}
         <div className="flex items-center space-x-3">
-          {/* Language Toggle */}
+          {/* language*/}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -97,7 +95,7 @@ export default function Header({
             <span>{language}</span>
           </motion.button>
 
-          {/* Dark Mode Toggle */}
+          {/* dark mode */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -111,7 +109,7 @@ export default function Header({
             )}
           </motion.button>
 
-          {/* User Avatar (static, no auth) */}
+          {/* user avatar */}
           <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-gray-200 bg-gradient-to-r from-blue-500 to-teal-500 flex items-center justify-center">
             <FiUser className="" size={16} />
           </div>

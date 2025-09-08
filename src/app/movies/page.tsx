@@ -9,7 +9,7 @@ export default function MoviesPage() {
   const dispatch = useDispatch<AppDispatch>()
   const { items, loading } = useSelector((state: RootState) => state.content)
 
-  // Fetch movies if not already loaded
+  // fetch movies if not already loaded
   useEffect(() => {
     if (!items.some(item => item.type === 'movie')) {
       dispatch(fetchMovies())

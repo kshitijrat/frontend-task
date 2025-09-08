@@ -9,7 +9,7 @@ export default function SocialPage() {
   const dispatch = useDispatch<AppDispatch>()
   const { items, loading } = useSelector((state: RootState) => state.content)
 
-  // Fetch social posts if not already loaded
+  // fetch social posts if not already loaded
   useEffect(() => {
     if (!items.some(item => item.type === 'social')) {
       dispatch(fetchSocialPosts())

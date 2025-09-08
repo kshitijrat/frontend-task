@@ -61,7 +61,7 @@ const mockSocialPosts = {
 }
 
 export async function GET() {
-  // Simulate API delay
+  
   await new Promise(resolve => setTimeout(resolve, 600))
 
   return NextResponse.json(mockSocialPosts)

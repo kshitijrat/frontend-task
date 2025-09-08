@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
-/* Default Light Mode */
+/*light Mode */
 html, body {
   background-color: #fff;
   color: #1a202c;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Dark Mode */
+/* dark Mode */
 html.dark, body.dark {
   background-color: #141414;
   color: white;

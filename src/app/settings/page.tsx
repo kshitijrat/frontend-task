@@ -64,7 +64,7 @@ export default function Settings() {
         animate={{ opacity: 1, y: 0 }}
         className=" rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8"
       >
-        {/* Header */}
+        {/* header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold  mb-2">Settings</h1>
           <p className="">
@@ -72,7 +72,7 @@ export default function Settings() {
           </p>
         </div>
 
-        {/* Category Selection */}
+        {/* category Selection */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold  mb-4">
             Preferred Categories

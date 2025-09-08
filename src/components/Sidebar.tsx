@@ -18,18 +18,12 @@ import { RootState } from '@/store'
 import { logout } from '@/store/slices/authSlice'
 import { clearFavoritesOnLogout, setCurrentUserEmail } from '@/store/slices/preferencesSlice'
 
-// --------------------------
-// Sidebar Navigation Config
-// --------------------------
 const categories = [
   { name: 'News', href: '/news', icon: FiRss },
   { name: 'Movies', href: '/movies', icon: FiFilm },
   { name: 'Social', href: '/social', icon: FiUsers },
 ]
 
-// --------------------------
-// Main Sidebar Component
-// --------------------------
 export default function Sidebar({
   showMobileMenu,
   setShowMobileMenu,
@@ -42,26 +36,23 @@ export default function Sidebar({
 
   return (
     <>
-      {/* Desktop Sidebar */}
       <motion.div
         initial={{ x: -264 }}
         animate={{ x: 0 }}
-        className="fixed inset-y-0 left-0 z-50 w-64 hidden lg:block border-r "
+        className="fixed inset-y-0 left-0 z-50 w-64 hidden lg:block border-r"
       >
         <SidebarContent router={router} pathname={pathname} />
       </motion.div>
 
-      {/* Mobile Sidebar */}
       <motion.div
         initial={{ x: -264 }}
         animate={{ x: showMobileMenu ? 0 : -264 }}
         transition={{ duration: 0.3 }}
-        className="fixed inset-y-0 left-0 z-50 w-64 lg:hidden border-r "
+        className="fixed inset-y-0 left-0 z-50 w-64 lg:hidden border-r"
       >
         <SidebarContent router={router} pathname={pathname} />
       </motion.div>
 
-      {/* Overlay for mobile */}
       {showMobileMenu && (
         <div
           className="fixed inset-0 z-40 lg:hidden bg-black/30"
@@ -72,9 +63,6 @@ export default function Sidebar({
   )
 }
 
-// --------------------------
-// Sidebar Content Component
-// --------------------------
 function SidebarContent({
   router,
   pathname,
@@ -85,22 +73,15 @@ function SidebarContent({
   const dispatch = useDispatch()
   const { user } = useSelector((state: RootState) => state.auth)
 
-  // --------------------------
-  // Logout Handler
-  // --------------------------
   const handleLogout = () => {
     dispatch(logout())
-    dispatch(clearFavoritesOnLogout())     // clears favorites state
+    dispatch(clearFavoritesOnLogout())
     dispatch(setCurrentUserEmail(null))
-    router.push('/login') // redirect to login after logout
+    router.push('/login')
   }
 
-  // --------------------------
-  // Navigation Handler
-  // --------------------------
   const handleNavigation = (href: string) => {
     if (!user) {
-      // If user not logged in, save the desired route and redirect to login
       localStorage.setItem('sf_redirect', href)
       router.push('/login')
     } else {
@@ -108,9 +89,6 @@ function SidebarContent({
     }
   }
 
-  // --------------------------
-  // Navigation Links
-  // --------------------------
   const navigation = [
     { name: 'Feed', href: '/', icon: FiHome },
     { name: 'Trending', href: '/trending', icon: FiTrendingUp },
@@ -121,10 +99,9 @@ function SidebarContent({
 
   return (
     <div className="flex flex-col h-full">
-      {/* Logo */}
       <div className="p-6">
         <div
-          className="flex items-center hover:cursor-pointer space-x-3"
+          className="flex items-center cursor-pointer space-x-3"
           onClick={() => handleNavigation('/')}
         >
           <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg flex items-center justify-center">
@@ -134,17 +111,14 @@ function SidebarContent({
         </div>
       </div>
 
-      {/* User Info Section */}
       <div className="px-6 mb-6">
-        <div className="flex items-center space-x-3 p-3 rounded-lg hover:cursor-pointer">
+        <div className="flex items-center space-x-3 p-3 rounded-lg cursor-pointer">
           <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-teal-500 flex items-center justify-center">
             <FiUser className="text-white" size={18} />
           </div>
           <div className="flex-1">
             <div className="text-sm font-medium">{user?.name ?? 'Guest'}</div>
-            <div className="text-xs truncate">
-              {user?.email ?? 'guest@example.com'}
-            </div>
+            <div className="text-xs truncate">{user?.email ?? 'guest@example.com'}</div>
           </div>
           {user && (
             <button
@@ -157,7 +131,6 @@ function SidebarContent({
         </div>
       </div>
 
-      {/* Main Navigation Links */}
       <nav className="flex-1 px-4 space-y-2">
         {navigation.map((item) => {
           const isActive = pathname === item.href
@@ -180,7 +153,6 @@ function SidebarContent({
         })}
       </nav>
 
-      {/* Categories Section */}
       <div className="px-4 pb-6">
         <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
           Categories

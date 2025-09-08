@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-// ThemeWrapper jo Provider ke andar use hoga
 function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
   const darkMode = useSelector((state: RootState) => state.preferences.darkMode)

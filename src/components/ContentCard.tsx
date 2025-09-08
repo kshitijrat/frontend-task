@@ -26,7 +26,6 @@ export default function ContentCard({ item, index }: ContentCardProps) {
 
   const handleFavoriteToggle = () => {
     if (!user) {
-      // save intended target (optional) and go to login
       if (typeof window !== 'undefined') {
         localStorage.setItem('sf_redirect', window.location.pathname)
       }
