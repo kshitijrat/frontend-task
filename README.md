@@ -113,4 +113,9 @@ PORT=3000
 * **Images:** Can be added via local `/public/images/` folder, external URLs, or base64 data for uploads. The `ContentCard` component handles displaying the images automatically.
 
 
+## **Preview**
 
+<div style="display: flex; gap: 10px;">
+  <img src="public/images/feed.png" alt="Feed Preview" width="300"/>
+  <img src="public/images/login.png" alt="Trending Preview" width="300"/>
+</div>
