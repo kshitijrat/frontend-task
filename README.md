@@ -94,7 +94,3 @@ http://localhost:3000
 * **State Management:**
   Redux Toolkit is used for `auth`, `preferences`, and `content` slices.
 
----
-
----
-```
