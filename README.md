@@ -7,7 +7,7 @@ SmartFeed is a React/Next.js web application that allows users to browse content
 
 ---
 
-## **Features**
+## Features
 
 - User authentication (signup/login/logout) with hashed passwords.
 - Per-user favorites stored in localStorage.
@@ -24,19 +24,19 @@ SmartFeed is a React/Next.js web application that allows users to browse content
 
 ---
 
-## **Tech Stack**
+## Tech Stack
 
-- **Frontend:** Next.js 13 (App Router), React
-- **State Management:** Redux Toolkit
-- **Styling:** Tailwind CSS
-- **Animations:** Framer Motion
-- **Auth:** LocalStorage-based mock authentication (bcrypt for password hashing)
-- **Icons:** React-Icons (Feather icons)
-- **Data Persistence:** LocalStorage (per-user favorites)
+- Frontend: Next.js 13 (App Router), React
+- State Management: Redux Toolkit
+- Styling: Tailwind CSS
+- Animations: Framer Motion
+- Auth: LocalStorage-based mock authentication (bcrypt for password hashing)
+- Icons: React-Icons (Feather icons)
+- Data Persistence: LocalStorage (per-user favorites)
 
 ---
 
-## **Setup & Installation**
+## Setup & Installation
 
 1. Clone the repository:
 
