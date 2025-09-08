@@ -34,13 +34,6 @@ SmartFeed is a React/Next.js web application that allows users to browse content
 
 ---
 
-## **Folder Structure**
-
-```
-````
-
----
-
 ## **Setup & Installation**
 
 1. Clone the repository:
