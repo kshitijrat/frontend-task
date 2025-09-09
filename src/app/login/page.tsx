@@ -63,8 +63,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-4">
-      <div className="max-w-md w-full text-center border border-gray-300 rounded-2xl p-8 shadow-lg bg-white">
+    <div className="min-h-screen  flex items-center justify-center p-4">
+      <div className="max-w-md w-full text-center border border-b border-r  rounded-2xl p-8 shadow-lg">
         <h1 className="text-2xl font-bold mb-4">{isLogin ? 'Login' : 'Sign Up'}</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
